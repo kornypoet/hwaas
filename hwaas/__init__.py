@@ -14,9 +14,13 @@ def main():
     parser.add_argument('clients', metavar='CLIENTS', type=int, help='number of clients to start')
     parser.add_argument('-v', '--version', action='version', version=__version__)
     args = parser.parse_args()
+
     logger.info('Starting %s workers', args.workers)
     for i in range(args.workers):
-        w = Worker()
+        worker = Worker(queue='hwaas')
+        worker.start()
+
     logger.info('Starting %s clients', args.clients)
     for i in range(args.clients):
-        w = Client()
+        client = Client(queue='hwaas', message='hello world')
+        client.start()
