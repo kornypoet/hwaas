@@ -15,8 +15,20 @@ RSpec.describe package('python-setuptools') do
   it { is_expected.to be_installed }
 end
 
+RSpec.describe package('puppet-agent') do
+  it { is_expected.to be_installed }
+end
+
 RSpec.describe service('redis-server') do
   it { is_expected.to be_running }
+end
+
+RSpec.describe service('supervisord') do
+  it { is_expected.to be_running }
+end
+
+describe port(9001) do
+  it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
 end
 
 RSpec.describe command('hwaas -v') do
