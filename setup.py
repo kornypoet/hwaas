@@ -17,7 +17,10 @@ setup(
     author_email='dempsey.travis@gmail.com',
     description='Hello World as a Service',
     packages=find_packages(exclude=['tests']),
-    install_requires=['rq'],
+    install_requires=[
+        'rq',
+        'PyYAML',
+    ],
     entry_points={
         'console_scripts': [
             'hwaas = hwaas:main',
