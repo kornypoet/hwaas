@@ -1,2 +1,7 @@
 ---
 redis::ip: '192.168.50.10'
+worker::ip: '192.168.50.20'
+client::ip: '192.168.50.30'
+rq::queue: 'hwaas'
+hwaas::install_dir: '/opt/hwaas'
+hwaas::config_dir: '/etc/hwaas'
