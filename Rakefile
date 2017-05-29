@@ -3,7 +3,9 @@ require 'rspec/core/rake_task'
 task default: 'spec:all'
 
 hosts = [
-  :redis
+  :redis,
+  :client,
+  :worker
 ]
 
 namespace :spec do
