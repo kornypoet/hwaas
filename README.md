@@ -63,9 +63,9 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -c CONFIG, --config CONFIG
-                        configuration file
+			configuration file
   -m MESSAGE, --message MESSAGE
-                        message to print
+			message to print
   -r, --remote          run workers and clients in vms
   -f, --foreground      run in foreground
   -s, --single          run in single process
@@ -81,7 +81,7 @@ INFO - MainProcess: Starting 1 clients
 INFO - Worker-0: Started at 1496115945.18
 INFO - Worker-0: RQ worker u'rq:worker:client.9070' started, version 0.8.0
 INFO - Worker-0: Cleaning registries for queue: hwaas
-INFO - Worker-0: 
+INFO - Worker-0:
 INFO - Worker-0: *** Listening on hwaas...
 INFO - Client-0: Started at 1496115945.18
 INFO - Client-0: Submitted job 8a03eff9-a20d-46fa-95ae-0bdebb350c6d
@@ -89,7 +89,7 @@ INFO - Worker-0: hwaas: hwaas.task.hello_world('hello world') (8a03eff9-a20d-46f
 hello world
 INFO - Worker-0: hwaas: Job OK (8a03eff9-a20d-46fa-95ae-0bdebb350c6d)
 INFO - Worker-0: Result is kept for 30 seconds
-INFO - Worker-0: 
+INFO - Worker-0:
 INFO - Worker-0: *** Listening on hwaas...
 INFO - Client-0: Submitted job 0ec49c4c-064b-41f4-b2a5-432df7d4941b
 INFO - Worker-0: hwaas: hwaas.task.hello_world('hello world') (0ec49c4c-064b-41f4-b2a5-432df7d4941b)
@@ -105,7 +105,7 @@ INFO - MainProcess: Starting 1 clients
 INFO - Worker-0: Started at 1496116016.46
 INFO - Worker-0: RQ worker u'rq:worker:client.9079' started, version 0.8.0
 INFO - Worker-0: Cleaning registries for queue: hwaas
-INFO - Worker-0: 
+INFO - Worker-0:
 INFO - Worker-0: *** Listening on hwaas...
 INFO - Client-0: Started at 1496116016.46
 INFO - Worker-0: hwaas: hwaas.task.hello_world('howdy partner') (2dc0e92c-97e9-41a9-bd7f-d4446add49b3)
@@ -158,13 +158,22 @@ worker $ tail -f /var/log/hwaas/worker.log
 INFO - worker-004: *** Listening on hwaas...
 INFO - worker-024: RQ worker u'rq:worker:worker.9930' started, version 0.8.0
 INFO - worker-024: Cleaning registries for queue: hwaas
-INFO - worker-024: 
+INFO - worker-024:
 INFO - worker-024: *** Listening on hwaas...
 INFO - worker-020: Started at 1496116151.43
 INFO - worker-020: RQ worker u'rq:worker:worker.9927' started, version 0.8.0
 INFO - worker-020: Cleaning registries for queue: hwaas
-INFO - worker-020: 
+INFO - worker-020:
 INFO - worker-020: *** Listening on hwaas...
 ```
 
+You can also run the following command to find out how long the queue is:
 
+```
+client $ hwaas 0 0 --info
+INFO - MainProcess: Queue length is 579
+```
+
+## Notes
+
+In order to successfully run 1000 clients, the configured memory for the client vm will need to be around 8192.
