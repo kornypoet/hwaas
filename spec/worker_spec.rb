@@ -16,11 +16,11 @@ RSpec.describe port(9001) do
   it { is_expected.to be_listening.on(local_options['worker::ip']).with('tcp') }
 end
 
-RSpec.describe file('/var/log/hwaas') do
+RSpec.describe file(local_options['hwaas::log_dir']) do
   it { is_expected.to be_directory }
 end
 
-RSpec.describe file('/etc/hwaas/config.yaml') do
+RSpec.describe file(File.join(local_options['hwaas::config_dir'], 'config.yaml')) do
   it { is_expected.to exist }
 end
 

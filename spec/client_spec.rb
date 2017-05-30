@@ -8,7 +8,7 @@ RSpec.describe package('puppet-agent') do
   it { is_expected.to be_installed }
 end
 
-RSpec.describe file('/etc/hwaas/config.yaml') do
+RSpec.describe file(File.join(local_options['hwaas::config_dir'], 'config.yaml')) do
   it { is_expected.to exist }
 end
 
