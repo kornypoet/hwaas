@@ -1,4 +1,5 @@
 $install_dir = lookup('hwaas::install_dir')
+$log_dir = lookup('hwaas::log_dir')
 
 class { 'python':
   version => 'system',
@@ -21,7 +22,7 @@ class { 'supervisord':
   inet_password        => undef,
 }
 
-file { '/var/log/hwaas':
+file { $log_dir:
   ensure => directory,
 }
 
