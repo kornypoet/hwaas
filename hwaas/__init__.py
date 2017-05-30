@@ -2,10 +2,13 @@ import argparse
 import logging
 from multiprocessing import Process
 import os
+from redis import Redis
+from rq import Queue
 import sys
 import time
 import xmlrpclib
 import yaml
+
 
 if os.environ.get('SUPERVISOR_PROCESS_NAME'):
     format = '%(levelname)s - ' + os.environ.get('SUPERVISOR_PROCESS_NAME') + ': %(message)s'
@@ -23,6 +26,7 @@ def main():
     parser.add_argument('workers', metavar='WORKERS', type=int, help='number of workers to start')
     parser.add_argument('clients', metavar='CLIENTS', type=int, help='number of clients to start')
     parser.add_argument('-c', '--config', type=argparse.FileType('r'), default='/etc/hwaas/config.yaml', help='configuration file')
+    parser.add_argument('-i', '--info', action='store_true', default=False, help='display queue information')
     parser.add_argument('-m', '--message', default='hello world', help='message to print')
     parser.add_argument('-r', '--remote', action='store_true', default=False, help='run workers and clients in vms')
     parser.add_argument('-f', '--foreground', action='store_true', default=False,help='run in foreground')
@@ -35,7 +39,9 @@ def main():
 
     config['rq::message'] = args.message
 
-    if args.foreground:
+    if args.info:
+        queue_length(config)
+    elif args.foreground:
         run_in_foreground(args.workers, args.clients, config)
     elif args.remote:
         run_supervisor(args.workers, args.clients, config)
@@ -48,6 +54,10 @@ def construct_client(options):
 def construct_worker(options):
     return Worker(queue=options['rq::queue'], redis_host=options['redis::ip'])
 
+def queue_length(options):
+    queue = Queue(options['rq::queue'], connection=Redis(options['redis::ip']))
+    logger.info('Queue length is %i', len(queue))
+
 def run_in_single_process(num_workers, num_clients, options):
     processes = []
     try:
@@ -55,6 +65,7 @@ def run_in_single_process(num_workers, num_clients, options):
         for i in range(num_workers):
             worker = construct_worker(options)
             process = Process(target=worker.run, name='Worker-' + str(i))
+            process.daemon = True
             processes.append(process)
             process.start()
 
@@ -62,6 +73,7 @@ def run_in_single_process(num_workers, num_clients, options):
         for i in range(num_clients):
             client = construct_client(options)
             process = Process(target=client.run, name='Client-' + str(i))
+            process.daemon = True
             processes.append(process)
             process.start()
 
